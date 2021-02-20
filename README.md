@@ -1,7 +1,7 @@
 # TwitterDataCollector
 Collects Tweets with attached videos and contains the given keywords. It also downloads videos attached to the tweets in the output folder.
 
-## Environment Setup Instructions
+## Installation
 To install all the required packages run
 `pip install -r requirements.txt`
   
