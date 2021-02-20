@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 from Helper import Helper
+import pandas as pd
 
 class Tweet(Helper):
 
@@ -9,6 +10,9 @@ class Tweet(Helper):
 		self.media_id = None
 		self.video_url = None
 		self.mpeg_url = None
+
+	def as_dict(self):
+		return {'TweetID': self.tweet_id, 'TweetURL': self.tweet_url, 'MediaID': self.media_id, 'VideoURL': self.video_url, 'MpegURL': self.mpeg_url}
 
 	# Extended entities will have media info
 	def search_extended_entities(self, tweet, debug_scope = 0):
@@ -108,26 +112,20 @@ class TweetParser:
 
 	def __init__(self, results, debug_scope):
 		self.results = results
-		self.debug_scope = debug_scope
-
-	def store_tweets(self, tweets):
-		for tweet in tweets:
-			print("tweet_id :", tweet.tweet_id)
-			print("tweet_url :", tweet.tweet_url)
-			print("media_id :", tweet.media_id)
-			print("video_url :", tweet.video_url)
-			print("mpeg_url :", tweet.mpeg_url)
+		self.debug_scope = debug_scope		
 
 	# Collect data for each tweet
-	def fetch_tweet_data(self):	
+	def store_tweet_data(self):	
 		tweets = []	
 		for tweet_data in self.results:
 			tweet_id = tweet_data['id_str']
 			tweet = Tweet(tweet_id)
 			tweet.search_extended_entities(tweet_data, self.debug_scope)
 			if (tweet.tweet_id != None) and (tweet.tweet_url != None) and (tweet.media_id != None) and (tweet.video_url != None) and (tweet.mpeg_url != None):
-				tweets.append(tweet)
+				tweets.append(tweet.as_dict())
 			else:
 				print("Skipping tweet ID: ", tweet_id)    
-		self.store_tweets(tweets)
-
+		
+		df = pd.DataFrame(tweets)
+		df.to_csv('./tweets.csv')
+		print(df)
