@@ -70,8 +70,7 @@ class VideoDownloader:
 				with open(f, 'rb') as fd:
 					shutil.copyfileobj(fd, wfd, 1024 * 1024 * 10)
 
-		
-		print('\t[*] Converting stream file to wav ...')
+		print('\t[*] Converting video stream to wav format ...')
 		
 		# Converting ts to mp4
 		ffmpeg\
