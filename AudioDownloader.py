@@ -15,7 +15,7 @@ import subprocess
 import pandas as pd
 
 
-class VideoDownloader:
+class AudioDownloader:
 	video_player_prefix = 'https://twitter.com/i/videos/tweet/'
 	video_api = 'https://api.twitter.com/1.1/videos/tweet/config/'
 
@@ -155,5 +155,5 @@ class VideoDownloader:
 
 df = pd.read_csv('./Data/tweets.csv', index_col=0)
 for url in df['MpegURL']:
-	video_dw = VideoDownloader(url, debug=0)
-	video_dw.download()
+	audio_dw = AudioDownloader(url, debug=0)
+	audio_dw.download()
