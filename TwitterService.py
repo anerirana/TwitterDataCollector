@@ -1,9 +1,12 @@
 #!/usr/bin/env python
 
+import os
 import requests
 from TweetProcessor import TweetParser
 
 BEARER_TOKEN = "Bearer AAAAAAAAAAAAAAAAAAAAAFZkIwEAAAAAukM9PY5a8Z0K1U3X4frDp%2BeZX4o%3Dv2Ir1HreMt9HvqjKJWaWT6Jx7gWnbCkKyiDbANzeqfQ84B2piL"
+URL = "https://api.twitter.com/1.1/tweets/search/fullarchive/HushUp.json?tweet_mode='extended'"
+KEYWORD_FILE_PATH = "./Data/Keywords.txt"
 
 
 def get_keyword_string():
@@ -20,7 +23,7 @@ def get_keyword_string():
 
 def fetch_tweets(keyword_string, next_token):
     payload1 = '{"query":"'
-    payload2 = 'has:videos","maxResults":"15"'
+    payload2 = 'has:videos lang:en","maxResults":"15"'
     payload3 = ',"next":"'+str(next_token)+'"'
     payload4 = '}'
     if next_token:
