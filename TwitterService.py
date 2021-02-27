@@ -37,7 +37,7 @@ def fetch_tweets(keyword_string, next_token):
     print(json_response.keys())
     return json_response
 
-
+curr_next=''
 try :
     keyword_string = get_keyword_string()
     response = fetch_tweets(keyword_string, None)
@@ -45,12 +45,12 @@ try :
     tweet_parser.store_tweet_data()
     if "next" in response.keys():
         next_token = response["next"]
+        curr_next = next_token
     else :
         next_token = None
     while next_token :
-        print("Logging next_token in case processing fails : ")
-        print(next_token)
-        response = fetch_tweets(keyword_string,next_token)
+        curr_next = next_token
+        response = fetch_tweets(keyword_string, next_token)
         tweet_parser = TweetParser(response["results"], debug_scope=0)
         tweet_parser.store_tweet_data()
         if "next" in response.keys():
@@ -59,8 +59,12 @@ try :
             next_token = None
     print("Logging end of tweet search; no further next token found")
 except KeyError:
+    print("Logging next_token in case processing fails : ")
+    print(curr_next)
     print("Error fetching tweets")
     print(response["error"])
 except Exception as e:
+    print("Logging next_token in case processing fails : ")
+    print(curr_next)
     print("Unknown exception")
     print(e)
