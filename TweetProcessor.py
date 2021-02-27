@@ -124,8 +124,12 @@ class TweetParser:
 			if (tweet.tweet_id != None) and (tweet.tweet_url != None) and (tweet.media_id != None) and (tweet.video_url != None) and (tweet.mpeg_url != None):
 				tweets.append(tweet.as_dict())
 			else:
-				print("Skipping tweet ID: ", tweet_id)    
+				print("Skipping tweet ID: ", tweet_id)   # to-do: change to info log
 		
-		df = pd.DataFrame(tweets)
-		df.to_csv('./tweets.csv')
-		print(df)
+		old_df = pd.read_csv('./Data/tweets.csv', index_col=0)
+		print(old_df) # to-do: change to debug log
+		new_df = pd.DataFrame(tweets)
+		print(new_df) # to-do: change to debug log
+		new_df = old_df.append(new_df, ignore_index=True)
+		new_df.to_csv('./Data/tweets.csv')
+		

@@ -17,7 +17,6 @@ def get_keyword_string():
     file_obj = open(KEYWORD_FILE_PATH, "r")
     keywords = file_obj.readlines()
     for keyword in keywords:
-        keyword = keyword[:-1]
         keyword_string = keyword_string+str(keyword)+str(whitespace)
     return keyword_string
 
