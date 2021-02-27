@@ -18,10 +18,15 @@ def get_keyword_string():
     return keyword_string
 
 
-def fetch_tweets(keyword_string):
+def fetch_tweets(keyword_string, next_token):
     payload1 = '{"query":"'
-    payload2 = 'has:videos","maxResults":"15"}'
-    payload = str(payload1)+str(keyword_string)+str(payload2)
+    payload2 = 'has:videos","maxResults":"15"'
+    payload3 = ',"next":"'+str(next_token)+'"'
+    payload4 = '}'
+    if next_token:
+      payload = str(payload1)+str(keyword_string)+str(payload2)+str(payload3)+str(payload4)
+    else :
+      payload = str(payload1)+str(keyword_string)+str(payload2)+str(payload4)
     print(payload)
     headers = {"Authorization": BEARER_TOKEN}
     response = requests.post(URL, data=payload, headers=headers)
@@ -32,9 +37,24 @@ def fetch_tweets(keyword_string):
 
 try :
     keyword_string = get_keyword_string()
-    response = fetch_tweets(keyword_string)
+    response = fetch_tweets(keyword_string, None)
     tweet_parser = TweetParser(response["results"], debug_scope=0)
     tweet_parser.store_tweet_data()
+    if "next" in response.keys():
+        next_token = response["next"]
+    else :
+        next_token = None
+    while next_token :
+        print("Logging next_token in case processing fails : ")
+        print(next_token)
+        response = fetch_tweets(keyword_string,next_token)
+        tweet_parser = TweetParser(response["results"], debug_scope=0)
+        tweet_parser.store_tweet_data()
+        if "next" in response.keys():
+            next_token = response["next"]
+        else : 
+            next_token = None
+    print("Logging end of tweet search; no further next token found")
 except KeyError:
     print("Error fetching tweets")
     print(response["error"])
