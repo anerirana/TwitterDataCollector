@@ -2,6 +2,8 @@
 from Helper import Helper
 import pandas as pd
 
+TWEETS_FILE_PATH = './Data/Tweets.csv'
+
 class Tweet(Helper):
 
 	def __init__(self, tweet_id):
@@ -126,10 +128,10 @@ class TweetParser:
 			else:
 				print("Skipping tweet ID: ", tweet_id)   # to-do: change to info log
 		
-		old_df = pd.read_csv('./Data/tweets.csv', index_col=0)
+		old_df = pd.read_csv(TWEETS_FILE_PATH, index_col=0)
 		print(old_df) # to-do: change to debug log
 		new_df = pd.DataFrame(tweets)
 		print(new_df) # to-do: change to debug log
 		new_df = old_df.append(new_df, ignore_index=True)
-		new_df.to_csv('./Data/tweets.csv')
+		new_df.to_csv(TWEETS_FILE_PATH)
 		
