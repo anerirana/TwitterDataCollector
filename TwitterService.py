@@ -23,7 +23,7 @@ def get_keyword_string():
 
 def fetch_tweets(keyword_string):
     payload1 = '{"query":"'
-    payload2 = 'has:videos","maxResults":"15"}'
+    payload2 = 'has:videos lang:en","maxResults":"15"}'
     payload = str(payload1)+str(keyword_string)+str(payload2)
     print(payload)
     headers = {"Authorization": BEARER_TOKEN}
