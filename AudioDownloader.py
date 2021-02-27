@@ -12,13 +12,14 @@ import ffmpeg
 import shutil
 import copy
 import subprocess
+import pandas as pd
 
 
-class VideoDownloader:
+class AudioDownloader:
 	video_player_prefix = 'https://twitter.com/i/videos/tweet/'
 	video_api = 'https://api.twitter.com/1.1/videos/tweet/config/'
 
-	def __init__(self, mpeg_url, output_dir='./output', debug=0):
+	def __init__(self, mpeg_url, output_dir='./Data/Audios', debug=0):
 		self.mpeg_url = mpeg_url
 		self.output_dir = output_dir
 		self.debug = debug
@@ -31,7 +32,6 @@ class VideoDownloader:
 		storage_dir = Path(output_dir)
 		Path.mkdir(storage_dir, parents=True, exist_ok=True)
 		self.storage = str(storage_dir)
-
 		self.requests = requests.Session()
 
 	def download(self):
@@ -140,6 +140,7 @@ class VideoDownloader:
 
 		return video_info
 
+	# to-do: remove and replace with logging
 	def __debug(self, msg_prefix, msg_body, msg_body_full = ''):
 		if self.debug == 0:
 			return
@@ -151,10 +152,8 @@ class VideoDownloader:
 			print('[Debug+] ' + '[' + msg_prefix + ']' + ' ' + msg_body + ' - ' + msg_body_full)
 
 
-if __name__ == '__main__':
-	parser = argparse.ArgumentParser()
-	parser.add_argument('mpeg_url')
-	args = parser.parse_args()
 
-	video_dw = VideoDownloader(args.mpeg_url, debug=0)
-	video_dw.download()
+df = pd.read_csv('./Data/tweets.csv', index_col=0)
+for url in df['MpegURL']:
+	audio_dw = AudioDownloader(url, debug=0)
+	audio_dw.download()
