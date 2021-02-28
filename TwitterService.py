@@ -5,30 +5,21 @@ import requests
 from TweetProcessor import TweetParser
 import CustomLogger
 
-BEARER_TOKEN = "Bearer AAAAAAAAAAAAAAAAAAAAAFZkIwEAAAAAukM9PY5a8Z0K1U3X4frDp%2BeZX4o%3Dv2Ir1HreMt9HvqjKJWaWT6Jx7gWnbCkKyiDbANzeqfQ84B2piL"
-URL = "https://api.twitter.com/1.1/tweets/search/fullarchive/HushUp.json?tweet_mode='extended'"
+BEARER_TOKEN = "Bearer AAAAAAAAAAAAAAAAAAAAAAA2JQEAAAAA2mlhZpa5zBG2PqvL%2BGoADWDO5GA%3Dk50Ddhm8r7GsCNUF3uhgX95BTbMCgpAPQhn8ds1o9KBtp6HUD6"
+URL = "https://api.twitter.com/1.1/tweets/search/fullarchive/development.json?tweet_mode='extended'"
 KEYWORD_FILE_PATH = "./Data/Keywords.txt"
 logger = CustomLogger.getCustomLogger()
 
 
 def get_keyword_string():
-<<<<<<< Updated upstream
-    keyword_string = ""
-=======
     logger.debug("Start : get_keyword_string()")
     opening_bracket = "("
     closing_bracket = ")"
     keyword_string = opening_bracket
->>>>>>> Stashed changes
     whitespace = " "
 
     file_obj = open(KEYWORD_FILE_PATH, "r")
     keywords = file_obj.readlines()
-<<<<<<< Updated upstream
-    for keyword in keywords:
-        # keyword = keyword[:-1]
-        keyword_string = keyword_string+str(keyword)+str(whitespace)
-=======
     num_keywords = len(keywords)
     for (i,keyword) in enumerate(keywords):
         logger.info("keyword directly after fetching from the file : %s", keyword)
@@ -40,7 +31,6 @@ def get_keyword_string():
           keyword_string = keyword_string+str(keyword)+str(whitespace)+"OR"+str(whitespace)
     logger.info("Keyword string generated : %s", keyword_string)
     logger.debug("End  : get_keyword_string()")
->>>>>>> Stashed changes
     return keyword_string
 
 
