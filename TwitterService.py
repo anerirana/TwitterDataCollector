@@ -4,20 +4,26 @@ import os
 import requests
 from TweetProcessor import TweetParser
 
-BEARER_TOKEN = "Bearer AAAAAAAAAAAAAAAAAAAAAFZkIwEAAAAAukM9PY5a8Z0K1U3X4frDp%2BeZX4o%3Dv2Ir1HreMt9HvqjKJWaWT6Jx7gWnbCkKyiDbANzeqfQ84B2piL"
-URL = "https://api.twitter.com/1.1/tweets/search/fullarchive/HushUp.json?tweet_mode='extended'"
+BEARER_TOKEN = "Bearer AAAAAAAAAAAAAAAAAAAAAAA2JQEAAAAA2mlhZpa5zBG2PqvL%2BGoADWDO5GA%3Dk50Ddhm8r7GsCNUF3uhgX95BTbMCgpAPQhn8ds1o9KBtp6HUD6"
+URL = "https://api.twitter.com/1.1/tweets/search/fullarchive/development.json?tweet_mode='extended'"
 KEYWORD_FILE_PATH = "./Data/Keywords.txt"
 
 
 def get_keyword_string():
-    keyword_string = ""
+    opening_bracket = "("
+    closing_bracket = ")"
+    keyword_string = opening_bracket
     whitespace = " "
 
     file_obj = open(KEYWORD_FILE_PATH, "r")
     keywords = file_obj.readlines()
-    for keyword in keywords:
-        # keyword = keyword[:-1]
-        keyword_string = keyword_string+str(keyword)+str(whitespace)
+    num_keywords = len(keywords)
+    for (i,keyword) in enumerate(keywords):
+        keyword = keyword[:-1]
+        if i == num_keywords - 1:
+          keyword_string = keyword_string+str(keyword)+str(closing_bracket)+str(whitespace)
+        else:
+          keyword_string = keyword_string+str(keyword)+str(whitespace)+"OR"+str(whitespace)
     return keyword_string
 
 
