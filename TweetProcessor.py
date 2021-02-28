@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 from Helper import Helper
 import pandas as pd
+from pandas.errors import EmptyDataError
 
 TWEETS_FILE_PATH = './Data/Tweets.csv'
 
@@ -128,10 +129,15 @@ class TweetParser:
 			else:
 				print("Skipping tweet ID: ", tweet_id)   # to-do: change to info log
 		
-		old_df = pd.read_csv(TWEETS_FILE_PATH, index_col=0)
-		print(old_df) # to-do: change to debug log
-		new_df = pd.DataFrame(tweets)
-		print(new_df) # to-do: change to debug log
-		new_df = old_df.append(new_df, ignore_index=True)
-		new_df.to_csv(TWEETS_FILE_PATH)
-		
+		try:
+			old_df = pd.read_csv(TWEETS_FILE_PATH, index_col=0)
+			print(old_df) # to-do: change to debug log
+			new_df = pd.DataFrame(tweets)
+			print(new_df) # to-do: change to debug log
+			new_df = old_df.append(new_df, ignore_index=True)
+			new_df.to_csv(TWEETS_FILE_PATH)
+		except EmptyDataError:
+			# When storing tweets first time, file will be empty. Directly write new tweets in csv.
+			new_df = pd.DataFrame(tweets)
+			print(new_df) # to-do: change to debug log
+			new_df.to_csv(TWEETS_FILE_PATH)
