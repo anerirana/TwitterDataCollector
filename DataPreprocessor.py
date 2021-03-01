@@ -20,6 +20,7 @@ def remove_duplicate_tweets():
     print("Dropped ", (num_rows-len(df)),
           " tweet URL duplicates")  # to-do: log info
 
+	# Sequential re-indexing to accommodate deleted rows
     df = df.reset_index(drop=True)
     df.to_csv(TWEETS_FILE_PATH)
 
