@@ -12,7 +12,10 @@ logger = CustomLogger.getCustomLogger()
 
 
 def get_keyword_string():
+<<<<<<< HEAD
     logger.debug("Start : get_keyword_string()")
+=======
+>>>>>>> main
     opening_bracket = "("
     closing_bracket = ")"
     keyword_string = opening_bracket
@@ -22,15 +25,22 @@ def get_keyword_string():
     keywords = file_obj.readlines()
     num_keywords = len(keywords)
     for (i,keyword) in enumerate(keywords):
+<<<<<<< HEAD
         logger.info("keyword directly after fetching from the file : %s", keyword)
         keyword = keyword[:-1]
         logger.info("keyword after trimming the last character : %s", keyword)
+=======
+        keyword = keyword[:-1]
+>>>>>>> main
         if i == num_keywords - 1:
           keyword_string = keyword_string+str(keyword)+str(closing_bracket)+str(whitespace)
         else:
           keyword_string = keyword_string+str(keyword)+str(whitespace)+"OR"+str(whitespace)
+<<<<<<< HEAD
     logger.info("Keyword string generated : %s", keyword_string)
     logger.debug("End  : get_keyword_string()")
+=======
+>>>>>>> main
     return keyword_string
 
 
