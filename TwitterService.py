@@ -12,7 +12,6 @@ logger = CustomLogger.getCustomLogger()
 
 
 def get_keyword_string():
-
     logger.debug("Start : get_keyword_string()")
     opening_bracket = "("
     closing_bracket = ")"
@@ -49,6 +48,7 @@ def fetch_tweets(keyword_string, next_token):
     headers = {"Authorization": BEARER_TOKEN}
     response = requests.post(URL, data=payload, headers=headers)
     json_response = response.json()
+    logger.info("Dictionary keys from response:")
     logger.info(json_response.keys())
     if "results" in json_response.keys():
         logger.info("Response result : %s", json_response["results"])
@@ -61,7 +61,7 @@ curr_next=''
 try :
     keyword_string = get_keyword_string()
     response = fetch_tweets(keyword_string, None)
-    tweet_parser = TweetParser(response["results"], debug_scope=0)
+    tweet_parser = TweetParser(response["results"])
     tweet_parser.store_tweet_data()
     if "next" in response.keys():
         next_token = response["next"]
@@ -72,7 +72,7 @@ try :
         logger.debug("Getting tweets from the next page with the token : %s", next_token)
         curr_next = next_token
         response = fetch_tweets(keyword_string, next_token)
-        tweet_parser = TweetParser(response["results"], debug_scope=0)
+        tweet_parser = TweetParser(response["results"])
         tweet_parser.store_tweet_data()
         if "next" in response.keys():
             next_token = response["next"]
@@ -80,9 +80,9 @@ try :
             next_token = None
     logger.debug("Logging end of tweet search; no further next token found")
 except KeyError:
-    logging.error("Logging next_token : %s", curr_next)
-    logging.error("Error fetching tweets", exc_info=True)
-    logging.error(response["error"])
-except Exception as e:
-    logging.error("Logging next_token : %s", curr_next)
-    logging.error("Unknown Exception", exc_info=True)
+    logger.error("Logging next_token : %s", curr_next)
+    logger.error("Error fetching tweets", exc_info=True)
+    logger.error(response["error"])
+except Exception:
+    logger.error("Logging next_token : %s", curr_next)
+    logger.error("Unknown Exception", exc_info=True)

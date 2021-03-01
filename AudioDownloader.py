@@ -13,38 +13,38 @@ import shutil
 import copy
 import subprocess
 import pandas as pd
+import CustomLogger
 
+logger = CustomLogger.getCustomLogger()
+OUTPUT_DIR = './Data/Audios'
+TWEETS_FILE_PATH = './Data/Tweets.csv'
 
 class AudioDownloader:
 	video_player_prefix = 'https://twitter.com/i/videos/tweet/'
 	video_api = 'https://api.twitter.com/1.1/videos/tweet/config/'
 
-	def __init__(self, mpeg_url, output_dir='./Data/Audios', debug=0):
+	def __init__(self, mpeg_url):
 		self.mpeg_url = mpeg_url
-		self.output_dir = output_dir
-		self.debug = debug
-
-		if debug > 2:
-			self.debug = 2
 
 		self.media_id = self.mpeg_url.split('/')[4]
 
-		storage_dir = Path(output_dir)
+		storage_dir = Path(OUTPUT_DIR)
 		Path.mkdir(storage_dir, parents=True, exist_ok=True)
 		self.storage = str(storage_dir)
 		self.requests = requests.Session()
 
 	def download(self):
-		self.__debug('Mpeg URL', self.mpeg_url)
+		logger.debug("Start: download()")
+		logger.debug("Downloading Mpeg ID %s", self.media_id)
 		
 		# Get the bearer token
-		self.__set_bearer_token()
+		self.set_bearer_token()
 
 		# Get the M3u8 file - contains streaming information
-		video_host, playlist = self.__get_m3u8_file()
+		video_host, playlist = self.get_m3u8_file()
 
 		# Get lowest resolution video to save memory
-		video_info = self.__get_lowest_resolution_video(playlist)
+		video_info = self.get_lowest_resolution_video(playlist)
 
 		video_file_name = Path(self.storage) / Path(self.media_id + '.mp4')
 		video_url = video_host + video_info.uri
@@ -70,7 +70,7 @@ class AudioDownloader:
 				with open(f, 'rb') as fd:
 					shutil.copyfileobj(fd, wfd, 1024 * 1024 * 10)
 
-		print('\t[*] Converting video stream to wav format ...')
+		logger.info('[*] Converting video stream to wav format ...')
 		
 		# Converting ts to mp4
 		ffmpeg\
@@ -85,7 +85,7 @@ class AudioDownloader:
 		subprocess.call(cmd, shell=True)
 
 
-		print('\t[+] Cleaning up ...')
+		logger.info('[+] Cleaning up ...')
 
 		for ts in ts_list:
 			p = Path(ts)
@@ -96,40 +96,50 @@ class AudioDownloader:
 
 		p = Path(video_file_name)
 		p.unlink()
+		logger.debug("End: download()")
 
-	def __set_bearer_token(self):
+	def set_bearer_token(self):
+		logger.debug("Start: set_bearer_token()")
 		video_player_url = self.video_player_prefix + self.media_id
 		video_player_response = self.requests.get(video_player_url).text
-		self.__debug('Video Player Body', '', video_player_response)
+		logger.debug("Video Player Body")
+		logger.debug(video_player_response)
 
 		js_file_url = re.findall('src="(.*js)', video_player_response)[0]
 		js_file_response = self.requests.get(js_file_url).text
-		self.__debug('JS File Body', '', js_file_response)
+		logger.debug("JS File Body")
+		logger.debug(js_file_response)
 
 		bearer_token_pattern = re.compile('Bearer ([a-zA-Z0-9%-])+')
 		bearer_token = bearer_token_pattern.search(js_file_response)
 		bearer_token = bearer_token.group(0)
 		self.requests.headers.update({'Authorization': bearer_token})
-		self.__debug('Bearer Token', bearer_token)
-		self.__set_guest_token()
+		logger.debug("Bearer Token")
+		logger.debug(bearer_token)
+		self.set_guest_token()
+		logger.debug("End: set_bearer_token()")
 
-	def __set_guest_token(self):
+	def set_guest_token(self):
+		logger.debug("Start: set_guest_token()")
 		res = self.requests.post("https://api.twitter.com/1.1/guest/activate.json")
 		res_json = json.loads(res.text)
 		self.requests.headers.update({'x-guest-token': res_json.get('guest_token')})
+		logger.debug("End: set_guest_token()")
 
-	def __get_m3u8_file(self):
+	def get_m3u8_file(self):
+		logger.debug("Start: get_m3u8_file()")
 		m3u8_response = self.requests.get(self.mpeg_url)
-		self.__debug('M3U8 Response', '', m3u8_response.text)
+		logger.debug("M3U8 Response: %s", m3u8_response.text)
 
 		m3u8_url_parse = urllib.parse.urlparse(self.mpeg_url)
 		video_host = m3u8_url_parse.scheme + '://' + m3u8_url_parse.hostname
 
 		m3u8_parse = m3u8.loads(m3u8_response.text)
-
+		logger.debug("End: get_m3u8_file()")
 		return [video_host, m3u8_parse]	
 
-	def __get_lowest_resolution_video(self, playlist):
+	def get_lowest_resolution_video(self, playlist):
+		logger.debug("Start: get_lowest_resolution_video()")
 		# Arbitrary high number
 		min_resolution = 99999999999
 
@@ -137,23 +147,11 @@ class AudioDownloader:
 			if instance.stream_info.resolution[0] < min_resolution:
 				min_resolution = instance.stream_info.resolution[0]
 				video_info = instance
-
+		logger.debug("End: get_lowest_resolution_video()")
 		return video_info
 
-	# to-do: remove and replace with logging
-	def __debug(self, msg_prefix, msg_body, msg_body_full = ''):
-		if self.debug == 0:
-			return
 
-		if self.debug == 1:
-			print('[Debug] ' + '[' + msg_prefix + ']' + ' ' + msg_body)
-
-		if self.debug == 2:
-			print('[Debug+] ' + '[' + msg_prefix + ']' + ' ' + msg_body + ' - ' + msg_body_full)
-
-
-
-df = pd.read_csv('./Data/tweets.csv', index_col=0)
+df = pd.read_csv(TWEETS_FILE_PATH, index_col=0)
 for url in df['MpegURL']:
-	audio_dw = AudioDownloader(url, debug=0)
+	audio_dw = AudioDownloader(url)
 	audio_dw.download()
