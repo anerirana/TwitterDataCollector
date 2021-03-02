@@ -13,6 +13,8 @@ def getCustomLogger():
   c_handler.setFormatter(c_format)
   f_handler.setFormatter(f_format)
 
+  if (logger.hasHandlers()):  
+    logger.handlers.clear()
   logger.addHandler(c_handler)
   logger.addHandler(f_handler)
   return logger
