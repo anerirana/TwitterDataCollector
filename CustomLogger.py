@@ -2,7 +2,8 @@ import logging
 
 def getCustomLogger():
   logger = logging.getLogger("TwitterScrapper")
-
+  
+  logger.setLevel(logging.DEBUG)
   c_handler = logging.StreamHandler()
   f_handler = logging.FileHandler("./Logs/TwitterScrapper.log")
   c_handler.setLevel(logging.WARNING)
