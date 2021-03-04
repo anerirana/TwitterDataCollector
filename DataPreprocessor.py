@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 
 import pandas as pd
+import CustomLogger
 
+logger = CustomLogger.getCustomLogger()
 TWEETS_FILE_PATH = './Data/Tweets.csv'
 
 
@@ -11,14 +13,12 @@ def remove_duplicate_tweets():
 
     # Drop rows with same media ID
     df.drop_duplicates(subset='MediaID', inplace=True)
-    print("Dropped ", (num_rows-len(df)),
-          " media ID duplicates")  # to-do: log info
+    logger.info("Dropped %s media ID duplicates", (num_rows-len(df)))
     num_rows = len(df)
 
     # Drop rows with same tweet URL
     df.drop_duplicates(subset='TweetURL', inplace=True)
-    print("Dropped ", (num_rows-len(df)),
-          " tweet URL duplicates")  # to-do: log info
+    logger.info("Dropped %s tweet URL duplicates", (num_rows-len(df)))
 
 	# Sequential re-indexing to accommodate deleted rows
     df = df.reset_index(drop=True)
