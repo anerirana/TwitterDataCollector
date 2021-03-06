@@ -148,7 +148,7 @@ class TweetParser:
 			logger.debug(new_df)
 			new_df = old_df.append(new_df, ignore_index=True)
 			new_df.to_csv(TWEETS_FILE_PATH)
-		except EmptyDataError:
+		except (EmptyDataError, FileNotFoundError):
 			# When storing tweets first time, file will be empty. Directly write new tweets in csv.
 			new_df = pd.DataFrame(tweets)
 			logger.debug("New data collected from tweets:")
