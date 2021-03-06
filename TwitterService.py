@@ -7,8 +7,8 @@ from TweetProcessor import TweetParser
 import CustomLogger
 
 BEARER_TOKEN = "Bearer AAAAAAAAAAAAAAAAAAAAAAA2JQEAAAAA2mlhZpa5zBG2PqvL%2BGoADWDO5GA%3Dk50Ddhm8r7GsCNUF3uhgX95BTbMCgpAPQhn8ds1o9KBtp6HUD6"
-TEST_URL = "https://api.twitter.com/1.1/tweets/search/30day/test.json?tweet_mode='extended'"
-DEV_URL = "https://api.twitter.com/1.1/tweets/search/fullarchive/development.json?tweet_mode='extended'"
+DEV_URL = "https://api.twitter.com/1.1/tweets/search/30day/development.json?tweet_mode='extended'"
+TEST_URL = "https://api.twitter.com/1.1/tweets/search/fullarchive/test.json?tweet_mode='extended'"
 KEYWORD_FILE_PATH = "./Data/Keywords.txt"
 logger = CustomLogger.getCustomLogger()
 
@@ -63,7 +63,7 @@ def fetch_tweets(url, keyword_string, next_token):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('-e', '--env', dest='env', default='test', help='The environment for twitter endpoint. Right now only \'dev\' and \'test\' are supported')
+    parser.add_argument('-e', '--env', dest='env', default='dev', help='The environment for twitter endpoint. Right now only \'dev\' and \'test\' are supported')
     args = parser.parse_args()
     url = ''
     if args.env == 'dev':
