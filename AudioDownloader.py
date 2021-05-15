@@ -14,6 +14,7 @@ import copy
 import subprocess
 import pandas as pd
 import CustomLogger
+import time
 
 logger = CustomLogger.getCustomLogger()
 OUTPUT_DIR = './Data/Audios'
@@ -98,7 +99,7 @@ class AudioDownloader:
 				return False
 				
 		except Exception as e:
-			logger.error("Caught Unknown Expection ", exc_info=True)
+			logger.error("Caught Unknown Exception ", exc_info=True)
 			self.clean_up(ts_list, ts_full_file, video_file_name)
 			return False
 		
@@ -184,6 +185,7 @@ for url in df['MpegURL']:
 	# Retain tweet data only for successful downloads
 	if not audio_dw.download():
 		df = df[df['MpegURL']!= url]
+	time.sleep(5)
 
 # Sequential re-indexing to accommodate deleted rows
 df = df.reset_index(drop=True)
