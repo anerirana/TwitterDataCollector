@@ -32,6 +32,10 @@ def get_keyword_string():
           keyword_string = keyword_string+str(keyword)+str(closing_bracket)+str(whitespace)+negation_keyword
         else:
           keyword_string = keyword_string+str(keyword)+str(whitespace)+"OR"+str(whitespace)
+    keyword_string = "(feminazi OR sexist OR Sexism OR misogyny OR feminist OR objectification OR (Penis envy) OR Patriarchy OR (Purity Culture) OR (Slut Shaming) OR Manterrupting OR Mansplaining OR TERF OR (Hostile Sexism) OR (Toxic masculinity)) -porn " 
+    # (Ugly OR extremist OR terrorist OR whore OR bigot OR bastard) 
+    # (Merkin OR Buckra OR Hick OR Honky OR Peckerwood OR Redneck OR (Country Bumpkin) OR (Hillbilly Bumpkin) OR (Trailer trash) OR (White trash))
+    # (feminazi OR sexist OR Racist OR Nationalist OR Superiority OR Bigot OR Sexism OR extremist OR leftist OR misogyny)
     logger.info("Keyword string generated : %s", keyword_string)
     logger.debug("End  : get_keyword_string()")
     return keyword_string
@@ -40,7 +44,7 @@ def get_keyword_string():
 def fetch_tweets(url, keyword_string, next_token):
     logger.debug("Start : fetch_tweets(%s,%s)", keyword_string, next_token)
     payload1 = '{"query":"'
-    payload2 = 'has:videos lang:en","maxResults":"15"'
+    payload2 = 'has:videos lang:en","maxResults":"100"'
     payload3 = ',"next":"'+str(next_token)+'"'
     payload4 = '}'
     if next_token:

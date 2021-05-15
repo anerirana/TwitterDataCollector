@@ -33,7 +33,7 @@ class Tweet():
 
 	# If tweet was longer than 140 charchters then information is stored in extended tweet
 	def search_extended_tweet(self, tweet):
-		logger.debug("Start: earch_extended_tweet()")
+		logger.debug("Start: search_extended_tweet()")
 		try:
 			extended_tweet = tweet['extended_tweet']
 			self.search_extended_entities(extended_tweet)
@@ -41,7 +41,7 @@ class Tweet():
 			self.search_retweeted_status(tweet)
 		except Exception:
 			logger.error("Unknown Exception", exc_info=True)
-		logger.debug("End: earch_extended_tweet()")
+		logger.debug("End: search_extended_tweet()")
 
     # If it was a retweet, then entities will be stored in retweeted status
 	def search_retweeted_status(self, tweet):
@@ -68,7 +68,7 @@ class Tweet():
 						video_info)
 					self.mpeg_url = self.fetch_mpeg_url(
 						video_info)
-					self.tweet_url = media['url']
+					self.tweet_url = media['expanded_url']
 			except KeyError:
 				continue
 			except Exception:
