@@ -2,6 +2,8 @@
 Collects Tweets that contians the given keywords and were posted with a video. It also downloads and extracts the audios from videos attached to these tweets.
 
 ## Installation
+Prerequisite: Python v3.x and pip needs to be installed
+
 To install all the required packages run
 `pip install -r requirements.txt`
   
