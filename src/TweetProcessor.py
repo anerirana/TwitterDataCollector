@@ -3,7 +3,7 @@ import pandas as pd
 from pandas.errors import EmptyDataError
 import CustomLogger
 
-TWEETS_FILE_PATH = './Data/Tweets.csv'
+TWEETS_FILE_PATH = '../Data/Tweets.csv'
 logger = CustomLogger.getCustomLogger()
 
 
