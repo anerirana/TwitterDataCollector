@@ -9,7 +9,7 @@ import CustomLogger
 BEARER_TOKEN = "Bearer YOUR_BEARER_TOKEN"
 DEV_URL = "https://api.twitter.com/1.1/tweets/search/30day/development.json?tweet_mode='extended'"
 TEST_URL = "https://api.twitter.com/1.1/tweets/search/fullarchive/test.json?tweet_mode='extended'"
-KEYWORD_FILE_PATH = "./Data/Keywords.txt"
+KEYWORD_FILE_PATH = "../Data/Keywords.txt"
 logger = CustomLogger.getCustomLogger()
 
 

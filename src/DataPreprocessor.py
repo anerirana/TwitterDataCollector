@@ -4,7 +4,7 @@ import pandas as pd
 import CustomLogger
 
 logger = CustomLogger.getCustomLogger()
-TWEETS_FILE_PATH = './Data/Tweets.csv'
+TWEETS_FILE_PATH = '../Data/Tweets.csv'
 
 
 def remove_duplicate_tweets():

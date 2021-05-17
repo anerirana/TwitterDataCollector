@@ -17,9 +17,9 @@ import CustomLogger
 import time
 
 logger = CustomLogger.getCustomLogger()
-OUTPUT_DIR = './Data/Audios'
-TWEETS_FILE_PATH = './Data/Tweets.csv'
-NEW_TWEETS_FILE_PATH = './Data/ValidTweets.csv'
+OUTPUT_DIR = '../Data/Audios'
+TWEETS_FILE_PATH = '../Data/Non_Offensive_Tweets.csv'
+NEW_TWEETS_FILE_PATH = '../Data/ValidTweets.csv'
 
 class AudioDownloader:
 	video_player_prefix = 'https://twitter.com/i/videos/tweet/'
