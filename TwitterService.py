@@ -6,7 +6,7 @@ import requests
 from TweetProcessor import TweetParser
 import CustomLogger
 
-BEARER_TOKEN = "Bearer AAAAAAAAAAAAAAAAAAAAAAA2JQEAAAAA2mlhZpa5zBG2PqvL%2BGoADWDO5GA%3Dk50Ddhm8r7GsCNUF3uhgX95BTbMCgpAPQhn8ds1o9KBtp6HUD6"
+BEARER_TOKEN = "Bearer YOUR_BEARER_TOKEN"
 DEV_URL = "https://api.twitter.com/1.1/tweets/search/30day/development.json?tweet_mode='extended'"
 TEST_URL = "https://api.twitter.com/1.1/tweets/search/fullarchive/test.json?tweet_mode='extended'"
 KEYWORD_FILE_PATH = "./Data/Keywords.txt"
@@ -32,7 +32,8 @@ def get_keyword_string():
           keyword_string = keyword_string+str(keyword)+str(closing_bracket)+str(whitespace)+negation_keyword
         else:
           keyword_string = keyword_string+str(keyword)+str(whitespace)+"OR"+str(whitespace)
-    keyword_string = "(feminazi OR sexist OR Sexism OR misogyny OR feminist OR objectification OR (Penis envy) OR Patriarchy OR (Purity Culture) OR (Slut Shaming) OR Manterrupting OR Mansplaining OR TERF OR (Hostile Sexism) OR (Toxic masculinity)) -porn " 
+    keyword_string = "(feminazi OR sexist OR Sexism OR misogyny OR feminist OR objectification OR (Penis envy) OR Patriarchy OR (Purity Culture) OR (Slut Shaming) OR Manterrupting OR Mansplaining OR TERF OR (Hostile Sexism) OR (Toxic masculinity)) " + negation_keyword 
+    # Sample keywords that can be used together to search for a particular type of hate speech :-
     # (Ugly OR extremist OR terrorist OR whore OR bigot OR bastard) 
     # (Merkin OR Buckra OR Hick OR Honky OR Peckerwood OR Redneck OR (Country Bumpkin) OR (Hillbilly Bumpkin) OR (Trailer trash) OR (White trash))
     # (feminazi OR sexist OR Racist OR Nationalist OR Superiority OR Bigot OR Sexism OR extremist OR leftist OR misogyny)
